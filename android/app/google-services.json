@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "540544502845",
+    "project_id": "learnflutter-rayen",
+    "storage_bucket": "learnflutter-rayen.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540544502845:android:9e9f7f20b55d96108bee54",
+        "android_client_info": {
+          "package_name": "com.example.learn_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYsrQkzrP_h2TmZFPw2iJKO_BTdWjmUw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
