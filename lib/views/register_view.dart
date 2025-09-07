@@ -39,48 +39,37 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(title: const Text('Register'),),
-      body: FutureBuilder(
-          future: waitTenSeconds(),
-          builder: (context, asyncSnapshot) {
-            switch (asyncSnapshot.connectionState) {
-              case ConnectionState.done:
-                return Column(
-                  children: [
-                    TextField(
-                      controller: _email,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                          hintText: 'Enter your email here'
-                      ),
-                    ),
-                    TextField(
-                      controller: _password,
-                      obscureText: true,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      decoration: const InputDecoration(
-                          hintText: 'Enter your password here'
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () async{
-                        final email = _email.text;
-                        final password = _password.text;
+      body: Column(
+        children: [
+          TextField(
+            controller: _email,
+            enableSuggestions: false,
+            autocorrect: false,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+                hintText: 'Enter your email here'
+            ),
+          ),
+          TextField(
+            controller: _password,
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            decoration: const InputDecoration(
+                hintText: 'Enter your password here'
+            ),
+          ),
+          TextButton(
+            onPressed: () async{
+              final email = _email.text;
+              final password = _password.text;
 
-                        final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-                        print(userCredential);
-                      },
-                      child: const Text("Register"),
-                    ),
-                  ],
-                );
-              default :
-                return const Text("Loading...");
-            }
-
-          }
+              final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+              print(userCredential);
+            },
+            child: const Text("Register"),
+          ),
+        ],
       ),
     );
   }
