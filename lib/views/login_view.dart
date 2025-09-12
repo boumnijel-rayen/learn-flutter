@@ -76,6 +76,7 @@ class _LoginViewState extends State<LoginView> {
                   print('Wrong password provided for that user.');
                 }
               }
+              Navigator.of(context).pushNamedAndRemoveUntil('/notes/', (route) => false);
             },
             child: const Text("Login"),
           ),
