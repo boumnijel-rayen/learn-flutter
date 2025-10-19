@@ -16,27 +16,72 @@ class FirebaseAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<AuthUser> logIn({required String email, required String password}) {
-    // TODO: implement logIn
-    throw UnimplementedError();
+  Future<AuthUser> logIn({required String email, required String password}) async{
+    try{
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      final user = currentUser;
+      if (user != null){
+        return user;
+      }else{
+        throw UserNotLoggedInException();
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        throw UserNotFoundException();
+      } else if (e.code == 'invalid-credential') {
+        throw WrongPasswordException();
+      } else {
+        throw GenericAuthException();
+      }
+    } catch(e){
+      throw GenericAuthException();
+    }
   }
 
   @override
   Future<void> logOut() {
-    // TODO: implement logOut
-    throw UnimplementedError();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null){
+      return FirebaseAuth.instance.signOut();
+    }else{
+      throw UserNotLoggedInException();
+    }
   }
 
   @override
-  Future<void> sendEmailVerification() {
-    // TODO: implement sendEmailVerification
-    throw UnimplementedError();
+  Future<void> sendEmailVerification() async{
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null){
+      await user.sendEmailVerification();
+    }else{
+      throw UserNotLoggedInException();
+    }
   }
 
   @override
-  Future<AuthUser> signUp({required String email, required String password}) {
-    // TODO: implement signUp
-    throw UnimplementedError();
+  Future<AuthUser> signUp({required String email, required String password}) async{
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email, password: password);
+      final user = currentUser;
+      if (user != null){
+        return user;
+      }else{
+        throw UserNotLoggedInException();
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password'){
+        throw WeakPasswordException();
+      }else if (e.code == 'email-already-in-use'){
+        throw EmailAlreadyInUseException();
+      } else if (e.code == 'invalid-email'){
+        throw InvalidEmailException();
+      }else{
+        throw GenericAuthException();
+      }
+    } catch(e){
+      throw GenericAuthException();
+    }
   }
 
 }

@@ -85,7 +85,7 @@ class _LoginViewState extends State<LoginView> {
                   await showErrorDialog(context, 'Wrong password provided for that user');
                 } else {
                   await showErrorDialog(context, 'Error: ${e.code}');
-                  }
+                }
               }
 
             },
