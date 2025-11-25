@@ -38,7 +38,7 @@ void main() {
 
     test('Create user should delegate to logIn function', () async {
       final badEmailUser = provider.signUp(
-        email: 'ra.boumnijel@gmail.com',
+        email: 'ra.boumnije@gmail.com',
         password: 'anypassword',
       );
 
@@ -47,7 +47,7 @@ void main() {
 
       final badPasswordUser = provider.signUp(
         email: 'ra.boumnijel@gmail.com',
-        password: 'rayen123',
+        password: 'rayen12',
       );
       expect(badPasswordUser,
           throwsA(const TypeMatcher<WrongPasswordException>()));
