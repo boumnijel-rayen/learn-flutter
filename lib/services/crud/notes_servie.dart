@@ -14,12 +14,18 @@ class NoteService{
 
   List<DatabaseNote> _notes = [];
 
-  final _notesStreamController = StreamController<List<DatabaseNote>>.broadcast();
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
-
      static final NoteService _shared = NoteService._sharedInstance();
-     NoteService._sharedInstance();
+     NoteService._sharedInstance(){
+      _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+        onListen: () {
+          _notesStreamController.sink.add(_notes);
+        },
+      );
+     }
      factory NoteService() => _shared;
+
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
+  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
     try {
@@ -121,7 +127,10 @@ class NoteService{
     );
     if (deletedCount == 0){
       throw CouldNotDeleteNote();
-    }
+    }else {
+       _notes.removeWhere((note) => note.id == id);
+       _notesStreamController.add(_notes);
+     }
   }
 
   Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
@@ -152,6 +161,7 @@ class NoteService{
     if (results.isEmpty){
       throw CouldNotFindUserException();
     }else{
+      var a = DatabaseUser.fromRow(results.first);
       return DatabaseUser.fromRow(results.first);
     }
   }
@@ -226,7 +236,7 @@ class NoteService{
 
         // create note table
         const createNoteTable = '''
-        CREATE TABLE "Note" (
+        CREATE TABLE IF NOT EXISTS "Note" (
           "ID"	INTEGER NOT NULL,
           "user_id"	INTEGER NOT NULL,
           "Text"	TEXT,
@@ -295,8 +305,8 @@ class DatabaseNote{
 const dbName = 'notes.db';
 const noteTable = 'note';
 const userTable = 'user';
-const idColumn = 'id';
-const emailColumn = 'email';
+const idColumn = 'ID';
+const emailColumn = 'Email';
 const userIdColumn = 'user_id';
-const textColumn = 'text';
+const textColumn = 'Text';
 const isSyncedWithCloudColumn = 'is_synced_with_cloud';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:learn_flutter/services/auth/auth_service.dart';
 import 'dart:developer' as devtools show log;
 
-import '../Utilities/show_error_dialog.dart';
+import '../Utilities/dialogs/error_dialog.dart';
 import '../services/auth/auth_exceptions.dart';
 
 
